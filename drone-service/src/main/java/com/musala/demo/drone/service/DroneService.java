@@ -10,7 +10,8 @@ public interface DroneService {
     public Drone getDroneById(Long id);
     public Drone getDroneBySerialNumber(String serialNumber);
     public Drone createDrone(Drone drone);
-    public Drone deleteDrone(Long id);
+    public Drone deleteDrone(String serialNumber);
     public Drone updateDrone(Drone drone);
-    public Drone updateBattery(String serialNumber, Integer newPercent);
+    public Drone updateBattery(String serialNumber, String newPercent);
+    public Drone updateDroneState(String serialNumber, String newState);
 }

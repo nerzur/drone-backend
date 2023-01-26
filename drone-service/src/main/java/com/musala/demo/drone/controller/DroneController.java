@@ -20,21 +20,52 @@ public class DroneController {
 
     @Autowired
     DroneService droneService;
+
     @GetMapping
-    public ResponseEntity<List <Drone>> listAllDrones(){
+    public ResponseEntity<List<Drone>> listAllDrones() {
         log.info("listing all Drones");
         List<Drone> droneList = droneService.listAllDrone();
-        log.info("Detected "+droneList.size());
+        log.info("Detected " + droneList.size());
         return ResponseEntity.ok(droneList);
     }
 
-    @PostMapping
-    public ResponseEntity<Drone> addDrone(@RequestBody Drone drone, BindingResult result){
-        if(result.hasErrors()){
+    @PostMapping(path = "/create")
+    public ResponseEntity<Drone> addDrone(@RequestBody Drone drone, BindingResult result) {
+        if (result.hasErrors()) {
             log.error("One or more errors has been occurred");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ExceptionsBuilder.formatMessage(result));
         }
         Drone droneDb = droneService.createDrone(drone);
+        return ResponseEntity.status(HttpStatus.CREATED).body(droneDb);
+    }
+
+    @PostMapping(path = "/edit")
+    public ResponseEntity<Drone> editDrone(@RequestBody Drone drone, BindingResult result) {
+        if (result.hasErrors()) {
+            log.error("One or more errors has been occurred");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ExceptionsBuilder.formatMessage(result));
+        }
+        Drone droneDb = droneService.updateDrone(drone);
+        return ResponseEntity.status(HttpStatus.CREATED).body(droneDb);
+    }
+
+    @PostMapping(path = "/delete")
+    public ResponseEntity<Drone> deleteDrone(@RequestBody Drone drone, BindingResult result) {
+        if (result.hasErrors()) {
+            log.error("One or more errors has been occurred");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ExceptionsBuilder.formatMessage(result));
+        }
+        Drone droneDb = droneService.deleteDrone(drone.getSerialNumber());
+        return ResponseEntity.status(HttpStatus.CREATED).body(droneDb);
+    }
+
+    @PostMapping(path = "/updateDroneBatery/{serialNumber}/{newPercent}")
+    public ResponseEntity<Drone> updateDroneBatteryPercent(BindingResult result, @PathVariable(required = true) String newPercent, @PathVariable(required = true) String serialNumber) {
+        if (result.hasErrors()) {
+            log.error("One or more errors has been occurred");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ExceptionsBuilder.formatMessage(result));
+        }
+        Drone droneDb = droneService.updateBattery(serialNumber, newPercent);
         return ResponseEntity.status(HttpStatus.CREATED).body(droneDb);
     }
 }
