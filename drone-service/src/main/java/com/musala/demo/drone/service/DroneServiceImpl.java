@@ -57,8 +57,6 @@ public class DroneServiceImpl implements DroneService {
         if(!droneDb.getState().equals(State.IDLE.toString()))
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone cannot be eliminated, as it is in some delivery process.");
         droneRepository.delete(droneDb);
-        if (null != getDroneById(droneDb.getId()))
-            ExceptionsBuilder.launchException(result,droneClassName, "This drone can´t be deleted.");
         return droneDb;
     }
 

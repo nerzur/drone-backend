@@ -39,7 +39,7 @@ public class MedicationServiceImpl implements MedicationService {
     @Override
     public Medication createMedication(Medication medication) {
         Medication medicationdb = medicationRepository.findByCode(medication.getCode());
-        if (null == medicationdb)
+        if (null != medicationdb)
             ExceptionsBuilder.launchException(result,medicationClassName, "This Medication is already exist.");
         return medicationRepository.save(medication);
     }

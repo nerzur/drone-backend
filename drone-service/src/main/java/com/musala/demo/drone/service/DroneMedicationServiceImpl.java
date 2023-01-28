@@ -54,7 +54,7 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
         Drone droneDb = droneRepository.findBySerialNumber(droneSerialNumber);
         if (null == droneDb)
             ExceptionsBuilder.launchException(result, className, "The indicated drone isn´t exists.");
-        if(!droneDb.getState().equals(State.IDLE))
+        if(!droneDb.getState().equals(State.IDLE.toString()))
             ExceptionsBuilder.launchException(result, className, "The drone must be in the IDLE state to proceed with the shipment of products.");
         List<MedicationQuantity> medicationQuantityList = new ArrayList<>();
         AtomicReference<Double> availableWeight = new AtomicReference<>(droneDb.getWeight());
