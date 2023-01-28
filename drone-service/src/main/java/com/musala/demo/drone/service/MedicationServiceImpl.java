@@ -1,6 +1,7 @@
 package com.musala.demo.drone.service;
 
 import com.musala.demo.drone.entity.Medication;
+import com.musala.demo.drone.repository.DroneMedicationRepository;
 import com.musala.demo.drone.repository.MedicationRepository;
 import com.musala.demo.drone.util.ExceptionsBuilder;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MedicationServiceImpl implements MedicationService {
 
     private final MedicationRepository medicationRepository;
+    private final DroneMedicationRepository droneMedicationRepository;
     private final BindingResult result = new BindException(new Exception(), "");
 
     private final String medicationClassName = "Medication";
@@ -47,6 +49,8 @@ public class MedicationServiceImpl implements MedicationService {
         Medication medicationDb = medicationRepository.findByCode(code);
         if (null == medicationDb)
             ExceptionsBuilder.launchException(result,medicationClassName, "The indicated medication isn´t exists.");
+        if(isMedicationSendingToDeliver(medicationDb))
+            ExceptionsBuilder.launchException(result,medicationClassName, "The indicated medication cannot be eliminated as there is at least one product in the delivery process of this type");
         medicationRepository.delete(medicationDb);
         return medicationRepository.findByCode(code) == null ? null : medicationDb;
     }
@@ -56,9 +60,15 @@ public class MedicationServiceImpl implements MedicationService {
         Medication medicationDb = medicationRepository.findByCode(medication.getCode());
         if (null == medicationDb)
             ExceptionsBuilder.launchException(result,medicationClassName, "The indicated medication isn´t exists.");
+        if(isMedicationSendingToDeliver(medicationDb))
+            ExceptionsBuilder.launchException(result,medicationClassName, "The indicated medication cannot be edited as there is at least one product in the delivery process of this type");
         medicationDb.setWeight(medication.getWeight());
         medicationDb.setName(medication.getName());
         medicationDb.setImage(medication.getImage());
         return medicationRepository.save(medicationDb);
+    }
+
+    private boolean isMedicationSendingToDeliver(Medication medication){
+        return !droneMedicationRepository.findByMedication(medication).isEmpty();
     }
 }

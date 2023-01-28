@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 
 @Entity (name = "tbl_drone_medication")
 @Data

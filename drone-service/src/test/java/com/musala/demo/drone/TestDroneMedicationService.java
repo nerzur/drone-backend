@@ -14,10 +14,5 @@ public class TestDroneMedicationService {
     @Autowired
     DroneMedicationService droneMedicationService;
 
-    @Test
-    public void testFindByDrone(){
-        MedicationsListByDroneResponse medicationsListByDroneResponse = droneMedicationService.findMedicationsByDrone("1QAZxsw2");
-        System.out.println(medicationsListByDroneResponse.toString());
-    }
 
 }

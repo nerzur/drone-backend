@@ -97,7 +97,7 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
     }
 
     @Override
-    public MedicationsListByDroneResponse deliverMedicines(String droneSerialNumber) {
+    public MedicationsListByDroneResponse deliverMedications(String droneSerialNumber) {
         Drone droneDb = droneRepository.findBySerialNumber(droneSerialNumber);
         if (null == droneDb)
             ExceptionsBuilder.launchException(result, className, "The indicated drone isn´t exists.");
@@ -126,7 +126,7 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
         if (null == droneDb)
             ExceptionsBuilder.launchException(result, className, "The indicated drone isn´t exists.");
         if(!droneDb.getState().equals(State.DELIVERED.toString()))
-            ExceptionsBuilder.launchException(result, className, "The drone must be in the DELIVERING state to proceed with the shipment of products.");
+            ExceptionsBuilder.launchException(result, className, "The drone must be in the DELIVERED state to proceed with the shipment of products.");
         droneDb.setState(State.RETURNING.toString());
         droneDb = droneRepository.save(droneDb);
         List<DroneMedication> droneMedicationList = droneMedicationRepository.findByDrone(droneDb);
@@ -142,8 +142,8 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
         Drone droneDb = droneRepository.findBySerialNumber(droneSerialNumber);
         if (null == droneDb)
             ExceptionsBuilder.launchException(result, className, "The indicated drone isn´t exists.");
-        if(!droneDb.getState().equals(State.RETURNING.toString()))
-            ExceptionsBuilder.launchException(result, className, "The drone must be in the RETURNING state to proceed with the shipment of products.");
+        if(!droneDb.getState().equals(State.RETURNING.toString()) && !droneDb.getState().equals(State.LOADED.toString()))
+            ExceptionsBuilder.launchException(result, className, "The drone must be in the RETURNING or LOADED state to proceed with the shipment of products.");
         droneDb.setState(State.IDLE.toString());
         droneDb = droneRepository.save(droneDb);
         return MedicationsListByDroneResponse.builder()

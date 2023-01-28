@@ -2,6 +2,7 @@ package com.musala.demo.drone.service;
 
 import com.musala.demo.drone.entity.Drone;
 import com.musala.demo.drone.entity.State;
+import com.musala.demo.drone.repository.DroneMedicationRepository;
 import com.musala.demo.drone.repository.DroneRepository;
 import com.musala.demo.drone.repository.MedicationRepository;
 import com.musala.demo.drone.ui.BatteryCapacityResponse;
@@ -20,6 +21,7 @@ public class DroneServiceImpl implements DroneService {
 
     private final DroneRepository droneRepository;
     private final MedicationRepository medicationRepository;
+    private final DroneMedicationRepository droneMedicationRepository;
     private final BindingResult result = new BindException(new Exception(), "");
 
     private final String droneClassName = "Drone";
@@ -88,7 +90,26 @@ public class DroneServiceImpl implements DroneService {
         Drone droneDb = getDroneBySerialNumber(serialNumber);
         if (null == droneDb)
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone isn´t exists.");
-        //TODO Analyze drone battery percentage treatment. Only in the Loading state can it increase. In other states it should decrease.
+        if(droneDb.getState().equals(State.LOADING.toString())){
+            if(percent < droneDb.getBatteryCapacity())
+                ExceptionsBuilder.launchException(result,droneClassName, "The drone is in Loading state, the indicated value for the new battery percentage is lower than the previous value.");
+        }
+        else if(!droneDb.getState().equals(State.LOADED.toString())){
+            if(percent > droneDb.getBatteryCapacity())
+                ExceptionsBuilder.launchException(result,droneClassName, "The drone is not in Loading state, the indicated value for the new battery percentage is higher than the previous value.");
+        }
+        else{
+            if(percent != droneDb.getBatteryCapacity() && percent != 100)
+                ExceptionsBuilder.launchException(result,droneClassName, "The drone is in Loaded state, the new battery value should be 100 percent.");
+
+        }
+        if(percent < 25 && !droneDb.getState().equals(State.LOADING.toString())){
+            droneDb.setState(State.LOADING.toString());
+            droneMedicationRepository.deleteAll(droneMedicationRepository.findByDrone(droneDb));
+        }
+        else if(droneDb.getState().equals(State.LOADING.toString()) && percent == 100){
+            droneDb.setState(State.LOADED.toString());
+        }
         droneDb.setBatteryCapacity(percent);
         return updateDrone(droneDb);
     }

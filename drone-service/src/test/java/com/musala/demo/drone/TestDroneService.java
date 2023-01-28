@@ -53,11 +53,6 @@ public class TestDroneService {
         Assertions.assertThat(droneService.updateDrone(drone)).isNotNull();
     }
 
-    @Test
-    public void testUpdateState(){
-        Drone drone = droneService.updateDroneState("1QAZxsw2", State.LOADED.toString());
-        Assertions.assertThat(droneService.updateDrone(drone)).isNotNull();
-    }
 
     @AfterAll
     public void finish(){

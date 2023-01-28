@@ -14,7 +14,7 @@ public interface DroneMedicationService {
 
     MedicationsListByDroneResponse sendDroneToDelivery(String droneSerialNumber, List<MedicationQuantityMinimal> medicationQuantityMinimalList);
 
-    MedicationsListByDroneResponse deliverMedicines(String droneSerialNumber);
+    MedicationsListByDroneResponse deliverMedications(String droneSerialNumber);
 
     MedicationsListByDroneResponse returnDrone(String droneSerialNumber);
 

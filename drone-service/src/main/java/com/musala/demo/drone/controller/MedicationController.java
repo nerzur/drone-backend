@@ -2,7 +2,14 @@ package com.musala.demo.drone.controller;
 
 import com.musala.demo.drone.entity.Medication;
 import com.musala.demo.drone.service.MedicationService;
+import com.musala.demo.drone.util.ErrorMessage;
 import com.musala.demo.drone.util.ExceptionsBuilder;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +28,12 @@ public class MedicationController {
     @Autowired
     MedicationService medicationService;
 
+    @Operation(summary = "Get all medications")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the medications list",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Medication.class))) })
+    })
     @GetMapping
     public ResponseEntity<List<Medication>> listAllMedications() {
         log.info("listing all Medications");
@@ -29,6 +42,15 @@ public class MedicationController {
         return ResponseEntity.ok(medicationList);
     }
 
+    @Operation(summary = "Create a medication")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medication is created successfully",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Medication.class)) }),
+            @ApiResponse(responseCode = "400", description = "An error is occurred (ie. This Medication is already exist.)",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
+    })
     @PostMapping(path = "/create")
     public ResponseEntity<Medication> addMedication(@RequestBody Medication medication, BindingResult result) {
         if (result.hasErrors()) {
@@ -39,6 +61,15 @@ public class MedicationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(medicationDb);
     }
 
+    @Operation(summary = "Edit a medication")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medication is edited successfully",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Medication.class)) }),
+            @ApiResponse(responseCode = "400", description = "An error is occurred (ie. The indicated medication isn´t exists, The indicated medication cannot be edited as there is at least one product in the delivery process of this type)",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
+    })
     @PostMapping(path = "/edit")
     public ResponseEntity<Medication> editMedication(@RequestBody Medication medication, BindingResult result) {
         if (result.hasErrors()) {
@@ -49,6 +80,15 @@ public class MedicationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(medicationDb);
     }
 
+    @Operation(summary = "Delete a medication")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "The medication is deleted successfully",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Medication.class)) }),
+            @ApiResponse(responseCode = "400", description = "An error is occurred (ie. The indicated medication isn´t exists, The indicated medication cannot be eliminated as there is at least one product in the delivery process of this type)",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)) }),
+    })
     @PostMapping(path = "/delete")
     public ResponseEntity<Medication> deleteDrone(@RequestBody Medication medication, BindingResult result) {
         if (result.hasErrors()) {

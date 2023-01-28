@@ -1,15 +1,13 @@
 package com.musala.demo.drone.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -23,7 +21,7 @@ public class Drone {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "The drone need a serialNumber")
-    @Size (min = 1, max = 100, message = "The serialNumber must be between 1 and 100 characters")
+    @Size(min = 1, max = 100, message = "The serialNumber must be between 1 and 100 characters")
     @NotNull
     private String serialNumber;
     @NotNull
