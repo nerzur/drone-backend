@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MedicationServiceImpl implements MedicationService {
 
-    MedicationRepository medicationRepository;
+    private final MedicationRepository medicationRepository;
     private final BindingResult result = new BindException(new Exception(), "");
 
     private final String medicationClassName = "Medication";

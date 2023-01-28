@@ -2,6 +2,7 @@ package com.musala.demo.drone.controller;
 
 import com.musala.demo.drone.entity.Drone;
 import com.musala.demo.drone.service.DroneService;
+import com.musala.demo.drone.ui.BatteryCapacityResponse;
 import com.musala.demo.drone.util.ExceptionsBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class DroneController {
         return ResponseEntity.status(HttpStatus.CREATED).body(droneDb);
     }
 
-    @PostMapping(path = "/updateDroneBatery/{serialNumber}/{newPercent}")
+    @PostMapping(path = "/updateDroneBattery/{serialNumber}/{newPercent}")
     public ResponseEntity<Drone> updateDroneBatteryPercent(BindingResult result, @PathVariable(required = true) String newPercent, @PathVariable(required = true) String serialNumber) {
         if (result.hasErrors()) {
             log.error("One or more errors has been occurred");
@@ -67,5 +68,20 @@ public class DroneController {
         }
         Drone droneDb = droneService.updateBattery(serialNumber, newPercent);
         return ResponseEntity.status(HttpStatus.CREATED).body(droneDb);
+    }
+
+    @GetMapping(path = "getAvailableDrones")
+    public ResponseEntity<List<Drone>> getAvailableDrones() {
+        log.info("listing available Drones");
+        List<Drone> droneList = droneService.getAvailableDrones();
+        log.info("Detected " + droneList.size());
+        return ResponseEntity.ok(droneList);
+    }
+
+    @GetMapping(path = "getBatteryCapacityByDrone/{serialNumber}")
+    public ResponseEntity<BatteryCapacityResponse> getBatteryCapacityByDrone(@PathVariable(required = true) String serialNumber) {
+        log.info("getting the battery capacity for the drone " + serialNumber);
+        BatteryCapacityResponse batteryCapacityResponse = droneService.getBatteryCapacityByDrone(serialNumber);
+        return ResponseEntity.ok(batteryCapacityResponse);
     }
 }

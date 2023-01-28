@@ -4,12 +4,14 @@ import com.musala.demo.drone.entity.Drone;
 import com.musala.demo.drone.entity.State;
 import com.musala.demo.drone.repository.DroneRepository;
 import com.musala.demo.drone.repository.MedicationRepository;
+import com.musala.demo.drone.ui.BatteryCapacityResponse;
 import com.musala.demo.drone.util.ExceptionsBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,9 +43,6 @@ public class DroneServiceImpl implements DroneService {
     public Drone createDrone(Drone drone) {
         if (null != getDroneBySerialNumber(drone.getSerialNumber()))
             ExceptionsBuilder.launchException(result,droneClassName, "This drone is already exist.");
-        if (isDroneOverWeight(drone)) {
-            ExceptionsBuilder.launchException(result,droneClassName, "The drone is over Weight.");
-        }
         drone.setState(State.IDLE.toString());
         return droneRepository.save(drone);
     }
@@ -53,6 +52,8 @@ public class DroneServiceImpl implements DroneService {
         Drone droneDb = getDroneBySerialNumber(serialNumber);
         if (null == droneDb)
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone isn´t exists.");
+        if(!droneDb.getState().equals(State.IDLE.toString()))
+            ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone cannot be eliminated, as it is in some delivery process.");
         droneRepository.delete(droneDb);
         if (null != getDroneById(droneDb.getId()))
             ExceptionsBuilder.launchException(result,droneClassName, "This drone can´t be deleted.");
@@ -66,12 +67,11 @@ public class DroneServiceImpl implements DroneService {
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone isn´t exists.");
             return null;
         }
-        droneDb.setState(drone.getState());
+        if(!droneDb.getState().equals(State.IDLE.toString()))
+            ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone cannot be edited, as it is in some delivery process.");
         droneDb.setModel(drone.getModel());
         droneDb.setBatteryCapacity(drone.getBatteryCapacity());
         droneDb.setWeight(drone.getWeight());
-        if (isDroneOverWeight(drone))
-            ExceptionsBuilder.launchException(result,droneClassName, "The drone is over Weight.");
         return droneRepository.save(droneDb);
     }
 
@@ -88,26 +88,34 @@ public class DroneServiceImpl implements DroneService {
         Drone droneDb = getDroneBySerialNumber(serialNumber);
         if (null == droneDb)
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone isn´t exists.");
+        //TODO Analyze drone battery percentage treatment. Only in the Loading state can it increase. In other states it should decrease.
         droneDb.setBatteryCapacity(percent);
         return updateDrone(droneDb);
     }
 
-    //TODO Verify the available states for the drone
+//    @Override
+//    public Drone updateDroneState(String serialNumber, String newState) {
+//        Drone droneDb = droneRepository.findBySerialNumber(serialNumber);
+//        if(null == droneDb)
+//            ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone isn´t exists.");
+//        droneDb.setState(newState);
+//        return droneRepository.save(droneDb);
+//    }
+
+
     @Override
-    public Drone updateDroneState(String serialNumber, String newState) {
+    public List<Drone> getAvailableDrones() {
+        List<Drone> droneList = droneRepository.findByState(State.IDLE.toString());
+        return null != droneList? droneList : new ArrayList<>();
+    }
+
+    @Override
+    public BatteryCapacityResponse getBatteryCapacityByDrone(String serialNumber) {
         Drone droneDb = droneRepository.findBySerialNumber(serialNumber);
         if(null == droneDb)
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone isn´t exists.");
-        droneDb.setState(newState);
-        return droneRepository.save(droneDb);
-    }
-
-    //TODO Load the Medications by drone and verify the OverWeight
-    private boolean isDroneOverWeight(Drone drone) {
-        double weightCount = 0;
-//        for (Medication medication : drone.getMedicationList()) {
-//            weightCount+=medication.getWeight();
-//        }
-        return drone.getWeight() < weightCount;
+        return BatteryCapacityResponse.builder()
+                .batteryCapacity(droneDb.getBatteryCapacity())
+                .build();
     }
 }
