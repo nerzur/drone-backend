@@ -21,6 +21,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "drone")

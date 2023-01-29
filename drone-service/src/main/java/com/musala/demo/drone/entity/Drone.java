@@ -10,8 +10,12 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
+/**
+ * This class contains the information regarding a Drone.
+ * @author Gabriel
+ * @version 1.0
+ */
 @Entity
 @Table (name = "tbl_drone")
 @AutoConfiguration
@@ -37,7 +41,7 @@ public class Drone implements Serializable {
     @NotNull
     @Max(value = 500, message = "The weight of drone must be 1 to 500gr")
     @Positive(message = "The weight of drone must be positive")
-    private double weight;
+    private double weightLimit;
     @NotNull
     @Max(value = 100, message = "The maximum value for de battery 100%")
     @Positive(message = "The maximum value for de battery 100%")

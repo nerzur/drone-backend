@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class DroneMedicationServiceImpl implements DroneMedicationService {
@@ -57,7 +61,7 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
         if(!droneDb.getState().equals(State.IDLE.toString()))
             ExceptionsBuilder.launchException(result, className, "The drone must be in the IDLE state to proceed with the shipment of products.");
         List<MedicationQuantity> medicationQuantityList = new ArrayList<>();
-        AtomicReference<Double> availableWeight = new AtomicReference<>(droneDb.getWeight());
+        AtomicReference<Double> availableWeight = new AtomicReference<>(droneDb.getWeightLimit());
         medicationQuantityMinimalList.forEach(medicationQuantityMinimal -> {
             Medication medication = medicationRepository.findByCode(medicationQuantityMinimal.getMedicationCode());
             if (null != medication) {

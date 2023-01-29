@@ -11,6 +11,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * This class contains the foreign key information for the DroneMedication relation.
+ * @author Gabriel
+ * @version 1.0
+ */
 @Embeddable
 @Data
 @AllArgsConstructor

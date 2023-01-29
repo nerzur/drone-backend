@@ -11,6 +11,11 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * This class contains the information regarding a Medication.
+ * @author Gabriel
+ * @version 1.0
+ */
 @Entity
 @Table(name = "tbl_medication")
 @AutoConfiguration

@@ -8,6 +8,10 @@ import com.musala.demo.drone.ui.MedicationsListByDroneResponse;
 
 import java.util.List;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 public interface DroneMedicationService {
 
     MedicationsListByDroneResponse findMedicationsByDrone(String droneSerialNumber);

@@ -15,6 +15,11 @@ import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * This class contains the information of the DroneMedication relationship.
+ * @author Gabriel
+ * @version 1.0
+ */
 @Entity (name = "tbl_drone_medication")
 @Data
 @AllArgsConstructor

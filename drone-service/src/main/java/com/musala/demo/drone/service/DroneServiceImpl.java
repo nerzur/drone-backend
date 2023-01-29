@@ -15,6 +15,10 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class DroneServiceImpl implements DroneService {
@@ -71,7 +75,7 @@ public class DroneServiceImpl implements DroneService {
             ExceptionsBuilder.launchException(result,droneClassName, "The indicated drone cannot be edited, as it is in some delivery process.");
         droneDb.setModel(drone.getModel());
         droneDb.setBatteryCapacity(drone.getBatteryCapacity());
-        droneDb.setWeight(drone.getWeight());
+        droneDb.setWeightLimit(drone.getWeightLimit());
         return droneRepository.save(droneDb);
     }
 

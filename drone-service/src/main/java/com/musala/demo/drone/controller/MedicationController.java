@@ -1,5 +1,6 @@
 package com.musala.demo.drone.controller;
 
+
 import com.musala.demo.drone.entity.Medication;
 import com.musala.demo.drone.service.MedicationService;
 import com.musala.demo.drone.util.ErrorMessage;
@@ -20,6 +21,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "medication")

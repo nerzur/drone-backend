@@ -11,6 +11,10 @@ import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class MedicationServiceImpl implements MedicationService {

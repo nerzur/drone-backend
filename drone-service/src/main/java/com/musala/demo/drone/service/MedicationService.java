@@ -4,6 +4,10 @@ import com.musala.demo.drone.entity.Medication;
 
 import java.util.List;
 
+/**
+ * @author Gabriel
+ * @version 1.0
+ */
 public interface MedicationService {
 
     public List<Medication> listAllMedications();
