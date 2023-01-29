@@ -47,7 +47,7 @@ class DroneMedicationServiceImplTest {
                 .model(Model.Middleweight.toString())
                 .serialNumber("1SE")
                 .state(State.IDLE.toString())
-                .weight(400)
+                .weightLimit(400)
                 .build();
         medication = Medication.builder()
                 .id(1L)
@@ -100,7 +100,7 @@ class DroneMedicationServiceImplTest {
                 .model(Model.Middleweight.toString())
                 .serialNumber("1SE")
                 .state(State.DELIVERING.toString())
-                .weight(400)
+                .weightLimit(400)
                 .build();
         Mockito.when(droneRepository.findBySerialNumber("1SE")).thenReturn(drone1);
         Mockito.when(droneRepository.save(Mockito.any(Drone.class))).thenReturn(drone1);
@@ -115,7 +115,7 @@ class DroneMedicationServiceImplTest {
                 .model(Model.Middleweight.toString())
                 .serialNumber("1SE")
                 .state(State.DELIVERED.toString())
-                .weight(400)
+                .weightLimit(400)
                 .build();
         Mockito.when(droneRepository.findBySerialNumber("1SE")).thenReturn(drone1);
         Mockito.when(droneRepository.save(Mockito.any(Drone.class))).thenReturn(drone1);
@@ -130,7 +130,7 @@ class DroneMedicationServiceImplTest {
                 .model(Model.Middleweight.toString())
                 .serialNumber("1SE")
                 .state(State.RETURNING.toString())
-                .weight(400)
+                .weightLimit(400)
                 .build();
         Mockito.when(droneRepository.findBySerialNumber("1SE")).thenReturn(drone1);
         Mockito.when(droneRepository.save(Mockito.any(Drone.class))).thenReturn(drone1);
