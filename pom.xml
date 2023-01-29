@@ -12,6 +12,8 @@
     </properties>
     <modules>
         <module>drone-service</module>
+        <module>registry-service</module>
+        <module>admin-service</module>
     </modules>
 
     <dependencyManagement>
