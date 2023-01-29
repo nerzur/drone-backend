@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -18,6 +19,8 @@ import java.sql.Timestamp;
 @AutoConfiguration
 public class DroneMedicationPK  implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     private Long droneId;
 
     private Long medicationId;
