@@ -37,10 +37,10 @@ Once the services have been executed, the following URLs will be available:
 - http://localhost:8086 : Contains the Spring Admin web interface. This service allows you to view the drone-service status.
 
 ### Swagger interface with some of the available web services.
-![swagger-ui](D:\Work\SpringBoot\drone-backend\swagger-ui.png)
+![swagger-ui](swagger-ui.png)
 
 ### Eureka Server interface.
-![eureka-server](D:\Work\SpringBoot\drone-backend\eureka-server.png)
+![eureka-server](eureka-server.png)
 
 ### Spring Boot Admin Interface.
-![spring-boot-admin](D:\Work\SpringBoot\drone-backend\spring-boot-admin.png)
+![spring-boot-admin](spring-boot-admin.png)
