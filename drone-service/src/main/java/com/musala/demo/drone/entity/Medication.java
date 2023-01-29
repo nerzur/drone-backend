@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "tbl_medication")
 @AutoConfiguration
@@ -15,7 +18,10 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Medication {
+public class Medication implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +38,8 @@ public class Medication {
     @Size(min = 1, max = 100, message = "The code must be between 1 and 100 characters")
     private String code;
     @NotNull
-    @Size(max = 2048)
-    @Column(length = 2048)
+    @Size(max = 1500000)
+    @Column(length = 1500000)
     private String image;
 
 }

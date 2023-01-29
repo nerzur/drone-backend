@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
  * the data provided in the request.</li>
  * <li><strong>Code 2:</strong> Exceptions thrown at execution level. These exceptions are thrown at the time of searching the database and executing business logic.</li>
  * </ul>
- * @author Nerzur
- * @version 1.0
+ * @author Gabriel
+ * @version 1.0.0
  */
 public class ExceptionsBuilder {
 
