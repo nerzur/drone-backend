@@ -46,7 +46,7 @@ class DroneServiceImplTest {
                 .model(Model.Middleweight.toString())
                 .serialNumber("1SE")
                 .state(State.IDLE.toString())
-                .weight(400)
+                .weightLimit(400)
                 .build();
         newDrone = Drone.builder()
                 .id(6L)
@@ -54,7 +54,7 @@ class DroneServiceImplTest {
                 .model(Model.Middleweight.toString())
                 .serialNumber("6SE")
                 .state(State.IDLE.toString())
-                .weight(400)
+                .weightLimit(400)
                 .build();
         droneList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -64,7 +64,7 @@ class DroneServiceImplTest {
                     .model(Model.Middleweight.toString())
                     .serialNumber((i + 1) + "SE")
                     .state(State.IDLE.toString())
-                    .weight(400)
+                    .weightLimit(400)
                     .build());
         }
         Mockito.when(droneRepository.findAll()).thenReturn(droneList);
@@ -111,7 +111,7 @@ class DroneServiceImplTest {
                 .model(Model.HEAVYWEIGHT.toString())
                 .serialNumber("1SE")
                 .state(State.IDLE.toString())
-                .weight(200)
+                .weightLimit(200)
                 .build();
         Mockito.when(droneRepository.save(drone1)).thenReturn(drone1);
         Assertions.assertThat(droneService.updateDrone(drone1)).isNotNull();
@@ -119,9 +119,9 @@ class DroneServiceImplTest {
 
     @Test
     void updateBattery() {
-        Drone drone1 = Drone.builder().id(1L).batteryCapacity(80).model(Model.Middleweight.toString()).serialNumber("1SE").state(State.IDLE.toString()).weight(400).build();
+        Drone drone1 = Drone.builder().id(1L).batteryCapacity(80).model(Model.Middleweight.toString()).serialNumber("1SE").state(State.IDLE.toString()).weightLimit(400).build();
         Mockito.when(droneRepository.findBySerialNumber("1SE")).thenReturn(drone1);
-        Drone drone2 = Drone.builder().id(1L).batteryCapacity(65).model(Model.Middleweight.toString()).serialNumber("1SE").state(State.IDLE.toString()).weight(400).build();
+        Drone drone2 = Drone.builder().id(1L).batteryCapacity(65).model(Model.Middleweight.toString()).serialNumber("1SE").state(State.IDLE.toString()).weightLimit(400).build();
         Mockito.when(droneRepository.save(drone1)).thenReturn(drone2);
         Assertions.assertThat(droneService.updateBattery("1SE", "65")).isNotNull();
         try {
