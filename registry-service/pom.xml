@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.musala.demo</groupId>
 	<artifactId>registry-service</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<name>registry-service</name>
 	<description>The Eureka Server for the drone services</description>
 	<properties>
@@ -50,6 +50,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>registry-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

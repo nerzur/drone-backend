@@ -30,7 +30,23 @@ On the other hand, you can also run the .jar files generated from each of the pr
 $ java -jar target\<filename>
 ```
 
+## Docker Deploy
+
+### Deploy with DockerFile
+In the root directory of each of the projects you can find two DockerFile files with which you can generate a container to run the service. In the case of DockerFile files, they contain the compilation process inside a temporary container and in the case of DockerFileDev files, the process must be carried out outside the container to later move the compilation to the container.
+To run these files you should run the following commands:
+- **registry-service:** `docker run -p 8761:8761 <DockerFileName>`
+- **admin-service:** `docker run -p 8086:8086 <DockerFileName>`
+- **drone-service:** `docker run -p 8091:8091 <DockerFileName>`
+
+### Deploy with Docker-Compose
+One way to simplify this process is by using DockerCompose. In the root directory of the project there are the files docker-compose and docker-compose-dev through which the project can be deployed using docker in a simplified way. In the first case, the 3 services will be deployed by compiling them in a temporary container and in the second case, the compiled files are selected from the root of the project and executed on a virtual server.
+```shell
+docker-compose up --build docker-compose.yml
+```
+
 ## Services Execution
+
 Once the services have been executed, the following URLs will be available:
 - http://localhost:8091/swagger-ui/index.html : This URL contains a web page that shows the information of each of the endpoints available in drone-service documented with Swagger. It contains information on the structure of the requests and responses that these endpoints accept.
 - http://localhost:8761: Contains the website of the Eureka Server, which allows you to follow the status of the drone-service..
